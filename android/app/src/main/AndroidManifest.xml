@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ieselcalamot.crud_framework">
    <application
-        android:label="crud_framework"
+        android:label="angel_espinosa_corrales_estalvi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
