@@ -30,7 +30,13 @@ class CRUDModelBase<T,S extends Item<T>> {
     datos[key]=elItem;
 
   }
-
+    void deleteItem(S elItem) {
+    T key=elItem.key;
+    if (datos.containsKey(key)) {
+      datos.remove(key);
+    }
+    throw ArgumentError("No existeix un item amb la clau $key");
+  }
   void updateItem(S item) {
     T key=item.key;
     if (datos.containsKey(key)) {

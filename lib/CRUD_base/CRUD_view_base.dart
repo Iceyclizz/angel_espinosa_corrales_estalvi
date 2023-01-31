@@ -1,3 +1,4 @@
+import '../costmodel.dart';
 import 'CRUD_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,7 @@ import 'CRUD_model_base.dart';
 
 enum CRUDViewMode { add, view, edit, delete }
 
-abstract class CRUDFormulari<T extends Item> extends StatefulWidget  {
+abstract class CRUDFormulari<T extends Item> extends StatefulWidget {
   const CRUDFormulari({super.key});
 
   T? getItem();
@@ -13,7 +14,11 @@ abstract class CRUDFormulari<T extends Item> extends StatefulWidget  {
 
 class CRUDViewBase<T extends Item> extends StatefulWidget {
   CRUDViewBase(
-      {Key? key, required this.detailedView, required this.editFormView, this.title = "Gestió", this.item})
+      {Key? key,
+      required this.detailedView,
+      required this.editFormView,
+      this.title = "Gestió",
+      this.item})
       : super(key: key);
 
   final CRUDControllerBase<T> _elController = CRUDControllerBase();
@@ -39,27 +44,49 @@ class _CRUDViewBaseState extends State<CRUDViewBase> {
 
   @override
   Widget build(BuildContext context) {
+    IconData buttonIcon = Icons.save;
 
-    IconData buttonIcon=Icons.save;
-
-    switch (mode){
+    switch (mode) {
       case CRUDViewMode.add:
-        buttonIcon=Icons.save;
+        buttonIcon = Icons.save;
         break;
       case CRUDViewMode.edit:
-        buttonIcon=Icons.save;
+        buttonIcon = Icons.save;
         break;
       case CRUDViewMode.view:
-        buttonIcon=Icons.edit;
+        buttonIcon = Icons.edit;
         break;
       case CRUDViewMode.delete:
-        buttonIcon=Icons.delete;
+        buttonIcon = Icons.delete;
         break;
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Row(
+          children: [
+            Expanded(
+              flex: 9,
+              child: Text(widget.title),
+            ),
+            Expanded(
+              flex: 1,
+              child: 
+              (mode == CRUDViewMode.edit)?
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  var elItem = widget.editFormView.getItem();
+                  if (elItem != null) {
+                    widget._elController.deleteItem(elItem);
+                    Navigator.pop(context);
+                  }
+                },
+                alignment: Alignment.centerRight,
+              ):Container(),
+            )
+          ],
+        ),
       ),
       body: Center(
         child: getView(mode),
@@ -76,17 +103,15 @@ class _CRUDViewBaseState extends State<CRUDViewBase> {
                   if (mode == CRUDViewMode.add) {
                     widget._elController.addItem(elItem);
                   } else {
-                    widget._elController.updateItem(widget.item!,elItem);
+                    widget._elController.updateItem(elItem);
                   }
                   Navigator.of(context).pop(elItem);
                 }
               }
             }
-          } else if (mode==CRUDViewMode.view) {
-            mode=CRUDViewMode.edit;
-            setState(() {
-
-            });
+          } else if (mode == CRUDViewMode.view) {
+            mode = CRUDViewMode.edit;
+            setState(() {});
           }
         },
         child: Icon(buttonIcon),

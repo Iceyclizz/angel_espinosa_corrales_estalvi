@@ -29,8 +29,13 @@ class BaseApp extends StatelessWidget {
             ),
             //Container(padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),color: Colors.lightBlueAccent,child: const Text("Evaluación",)),
             ListTile(
-              title: const Text("Menú item 1"),
-              onTap: () => Navigator.of(context).pushNamed("/"),
+              title: const Text("Home"),
+              onTap: () async {await Navigator.of(context).pushNamed("/");
+              },
+            ),
+            ListTile(
+              title: const Text("Costes"),
+              onTap: () => Navigator.of(context).pushNamed("/costlist"),
             ),
            ],
         ),
